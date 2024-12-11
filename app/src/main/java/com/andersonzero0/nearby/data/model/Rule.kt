@@ -1,5 +1,8 @@
 package com.andersonzero0.nearby.data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Rule(
     val id: String,
     val description: String,
