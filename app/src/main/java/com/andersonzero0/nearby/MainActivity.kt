@@ -4,17 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.andersonzero0.nearby.data.model.Market
 import com.andersonzero0.nearby.ui.screen.HomeScreen
+import com.andersonzero0.nearby.ui.screen.HomeViewModel
 import com.andersonzero0.nearby.ui.screen.MarketDetailsScreen
 import com.andersonzero0.nearby.ui.screen.SplashScreen
 import com.andersonzero0.nearby.ui.screen.WelcomeScreen
@@ -31,41 +38,49 @@ class MainActivity : ComponentActivity() {
             NearbyTheme {
                 val navController = rememberNavController()
 
-                Scaffold { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = Splash,
-                        modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
-                    ) {
-                        composable<Splash> {
-                            SplashScreen(
-                                onNavigateToWelcome = {
-                                    navController.navigate(Welcome)
-                                }
-                            )
-                        }
+                val homeViewModel by viewModels<HomeViewModel>()
+                val homeUiState by homeViewModel.uiState.collectAsStateWithLifecycle()
 
-                        composable<Welcome> {
-                            WelcomeScreen(onNavigateToHome = {
-                                navController.navigate(Home)
-                            })
-                        }
+                //Scaffold { innerPadding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = Splash,
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars)
+                    //modifier = Modifier.padding(top = innerPadding.calculateTopPadding())
+                ) {
+                    composable<Splash> {
+                        SplashScreen(
+                            onNavigateToWelcome = {
+                                navController.navigate(Welcome)
+                            }
+                        )
+                    }
 
-                        composable<Home> {
-                            HomeScreen(onNavigateToMarketDetails = { selectedMarket ->
+                    composable<Welcome> {
+                        WelcomeScreen(onNavigateToHome = {
+                            navController.navigate(Home)
+                        })
+                    }
+
+                    composable<Home> {
+                        HomeScreen(
+                            onNavigateToMarketDetails = { selectedMarket ->
                                 navController.navigate(selectedMarket)
-                            })
-                        }
+                            },
+                            uiState = homeUiState,
+                            onEvent = homeViewModel::onEvent
+                        )
+                    }
 
-                        composable<Market> {
-                            val selectedMarket = it.toRoute<Market>()
+                    composable<Market> {
+                        val selectedMarket = it.toRoute<Market>()
 
-                            MarketDetailsScreen(market = selectedMarket, onNavigateBack = {
-                                navController.popBackStack()
-                            })
-                        }
+                        MarketDetailsScreen(market = selectedMarket, onNavigateBack = {
+                            navController.popBackStack()
+                        })
                     }
                 }
+                //}
             }
         }
     }

@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -20,6 +22,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val apiKeysFile = project.rootProject.file("api-keys.properties")
+        val properties = Properties()
+
+        properties.load(apiKeysFile.inputStream())
+
+        val apiKey = properties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""
+
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = apiKey
     }
 
     buildTypes {
@@ -54,8 +65,12 @@ android {
 dependencies {
     implementation(libs.maps.compose)
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.navigation.compose)
     implementation(libs.kotlin.serialization)
+
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.bundles.ktor)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -1,7 +1,10 @@
 package com.andersonzero0.nearby.data.model
 
 import androidx.annotation.DrawableRes
+import com.andersonzero0.nearby.ui.component.category.CategoryFilterChipView
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Category(
     val id: String,
     val name: String,
