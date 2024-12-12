@@ -1,4 +1,4 @@
-package com.andersonzero0.nearby.ui.screen.route
+package com.andersonzero0.nearby.ui.route
 
 import kotlinx.serialization.Serializable
 
@@ -12,4 +12,4 @@ data object Welcome
 data object Home
 
 @Serializable
-data object Market
+data object QRCodeScanner

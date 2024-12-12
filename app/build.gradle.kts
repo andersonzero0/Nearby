@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.kotlin.serialization)
 
+    implementation(libs.zxing)
+    implementation(libs.zxing.android.embedded)
+
     implementation(platform(libs.ktor.bom))
     implementation(libs.bundles.ktor)
 

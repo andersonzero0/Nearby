@@ -1,4 +1,4 @@
-package com.andersonzero0.nearby.ui.screen
+package com.andersonzero0.nearby.ui.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,7 @@ class HomeViewModel : ViewModel() {
 
     fun onEvent(event: HomeUiEvent) {
         when(event) {
-            HomeUiEvent.OnFetchCategories -> fetchCategories()
+            is HomeUiEvent.OnFetchCategories -> fetchCategories()
             is HomeUiEvent.OnFetchMarkets -> fetchMarkets(event.categoryId)
         }
     }

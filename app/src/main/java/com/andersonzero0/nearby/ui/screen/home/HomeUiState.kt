@@ -1,4 +1,4 @@
-package com.andersonzero0.nearby.ui.screen
+package com.andersonzero0.nearby.ui.screen.home
 
 import com.andersonzero0.nearby.data.model.Category
 import com.andersonzero0.nearby.data.model.Market

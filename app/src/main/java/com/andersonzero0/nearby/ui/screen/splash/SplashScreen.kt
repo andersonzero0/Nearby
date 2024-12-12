@@ -1,4 +1,4 @@
-package com.andersonzero0.nearby.ui.screen
+package com.andersonzero0.nearby.ui.screen.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
